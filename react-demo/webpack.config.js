@@ -13,6 +13,7 @@ var config = {
   resolve:{
     extensions: ['', '.js', '.jsx']
   },
+  watch: true,
   module: {
     loaders: [
       {

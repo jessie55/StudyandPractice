@@ -1,0 +1,17 @@
+.addList{
+	display: inline-block;
+	margin-right: 16px;
+	vertical-align: top;
+}
+.searchBar{
+	position: relative;
+	display: inline-block;
+		padding-right: 40px;
+	margin-bottom: 20px;
+		.btn{
+		position: absolute;
+		top: 0;
+	    right: 0;
+	}
+}
+		
