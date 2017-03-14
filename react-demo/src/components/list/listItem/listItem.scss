@@ -1,0 +1,15 @@
+td .btn{
+	width: 50px;
+    height: 28px;
+    padding: 0;
+    line-height: 26px;
+	color: #447BFE;
+	background: #fff;
+	border: 1px solid #447BFE;
+	border-radius: 2px;
+	margin-left: 10px;
+	&:hover{
+		color: #fff;
+		background: #447BFE;
+	}
+}
