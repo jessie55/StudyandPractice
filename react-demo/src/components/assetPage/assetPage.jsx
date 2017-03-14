@@ -9,6 +9,7 @@ export default class AssetPage extends React.Component{
 		return(
 			<div>
 				<Button /> 
+				<List /> 
 				<Panel /> 
 			</div>
 		)

@@ -3,8 +3,25 @@ import './panel.scss';
 
 class Panel extends React.Component{
 
+	constructor(props){
+		super(props);
+		this.state = {
+			showPanel: false
+		};
+		this.changeState = this.changeState.bind(this);
+	}
+	changeState(){
+		console.log(111);
+		// console.log(state);
+		// this.setState({
+		// 	showPanel: state
+		// });
+	}
 	render(){
-		let popCls = 'hide';
+		let popCls = '';
+		if(!this.state.showPanel){
+			popCls = 'hide';
+		}
 
 		return(
 			<div className={ "popup "+popCls } >
