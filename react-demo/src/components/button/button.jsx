@@ -1,21 +1,19 @@
 import React, { PropTypes } from 'react';
-import Panel from '../panel/panel';
 import './button.scss';
+
+const propTypes = {
+  openPanel: PropTypes.func.isRequired
+};
 
 export default class Button extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			searchVal: '',
-			showPanel: false
+			searchVal: ''
 		};
-		this.addItem = this.addItem.bind(this);
+
 		this.searchItem = this.searchItem.bind(this);
 		this.searchValChange = this.searchValChange.bind(this);
-	}
-	addItem(){
-		console.log('add');
-		Panel.changeState();
 	}
 	searchValChange(e){
 		this.setState({
@@ -29,9 +27,9 @@ export default class Button extends React.Component{
 	render(){
 		return(
 			<div>
-				<a className="btn addList" onClick={this.addItem} >add</a>
+				<a className="btn addList" onClick={() => this.props.openPanel(true)} >add</a>
 				<div className="searchBar">
-					<input type="text" className="ipt" onChange={this.searchValChange} />
+					<input type="text" className="ipt" value="1212" onChange={this.searchValChange} />
 					<a className="btn" onClick={this.searchItem} >search</a>
 				</div>
 			</div>	
