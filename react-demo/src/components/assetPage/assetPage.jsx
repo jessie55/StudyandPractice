@@ -8,45 +8,42 @@ export default class AssetPage extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showPanel: false,
-			assetInfo:{
-				owner:'',
-				id:'',
-				info:''
-			}
+			panelState: false,
+			keyword: '',
+			assetInfo:{ owner:'', id:'', info:'', index: ''}
 		};
 
-		this.changePanelState = this.changePanelState.bind(this);
-		this.setAssetInfo = this.setAssetInfo.bind(this);
-		this.changeAssetInfo = this.changeAssetInfo.bind(this);
+		this.setPanelState = this.setPanelState.bind(this);
+		this.changePanelInfo = this.changePanelInfo.bind(this);
+		this.confirmAsset = this.confirmAsset.bind(this);
+		this.search = this.search.bind(this);
 	}
-	changePanelState(param){
+	setPanelState(param){
 		this.setState({
-			showPanel: param
+			panelState: param
 		});
 	}
-	setAssetInfo(obj){
-		this.changePanelState(true);
+	changePanelInfo(obj,state){
+		this.setPanelState(state);
 		this.setState({
-			assetInfo: {
-				owner:obj.owner,
-				id:obj.id,
-				info:obj.info
-			}
+			assetInfo: obj
 		});
 	}
-	changeAssetInfo(obj){
-		console.log(obj);
-		this.changePanelState(false);
+	confirmAsset(obj){
+		this.setPanelState(false);
 	}
-
+	search(keyword){
+		this.setState({
+			keyword: keyword
+		});
+	}
 	render(){
 		return(
 			<div className="wrap">
 				<header>JDC资产盘点表</header>
-				<Button openPanel={this.changePanelState} /> 
-				<List setAssetInfo={this.setAssetInfo} /> 
-				<Panel showPanel={this.state.showPanel} assetInfo={this.state.assetInfo} closePanel={this.changePanelState} confirm={this.changeAssetInfo}  /> 
+				<Button openPanel={this.changePanelInfo} search={this.search} /> 
+				<List changePanelInfo={this.changePanelInfo} newAssetItem={this.state.assetInfo} keyword={this.state.keyword} /> 
+				<Panel panelState={this.state.panelState} assetInfo={this.state.assetInfo} close={this.setPanelState} confirm={this.confirmAsset}  /> 
 			</div>
 		)
 	}

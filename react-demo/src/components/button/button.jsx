@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import './button.scss';
 
 const propTypes = {
-  openPanel: PropTypes.func.isRequired
+  openPanel: PropTypes.func.isRequired,
+  search: PropTypes.func.isRequired
 };
 
 export default class Button extends React.Component{
@@ -11,26 +12,27 @@ export default class Button extends React.Component{
 		this.state = {
 			searchVal: ''
 		};
-
-		this.searchItem = this.searchItem.bind(this);
 		this.searchValChange = this.searchValChange.bind(this);
 	}
+
 	searchValChange(e){
 		this.setState({
 			searchVal: e.target.value
 		});
 	}
-	searchItem(){
-		console.log(this.state.searchVal);
-	}
 
 	render(){
+		let clearAsset={
+			owner: '',
+			id: '',
+			info: ''
+		};
 		return(
 			<div>
-				<a className="btn addList" onClick={() => this.props.openPanel(true)} >add</a>
+				<a className="btn addList" onClick={() => this.props.openPanel(clearAsset,true)} >add</a>
 				<div className="searchBar">
-					<input type="text" className="ipt" value="1212" onChange={this.searchValChange} />
-					<a className="btn" onClick={this.searchItem} >search</a>
+					<input type="text" className="ipt" onChange={this.searchValChange} />
+					<a className="btn" onClick={()=>this.props.search(this.state.searchVal)} >search</a>
 				</div>
 			</div>	
 		)

@@ -4,7 +4,7 @@ import ListItem from './listItem/listItem';
 import './list.scss';
 
 const propTypes = {
-  setAssetInfo: PropTypes.func.isRequired
+  changePanelInfo: PropTypes.func.isRequired
 };
 class List extends React.Component{
 	constructor(props){
@@ -19,9 +19,50 @@ class List extends React.Component{
 
 		this.delete = this.delete.bind(this);
 		this.change = this.change.bind(this);
+		this.getData = this.getData.bind(this);
 	}
 	componentWillMount(){
-		var _this = this;
+		this.getData();
+	}
+	componentWillReceiveProps(nextProps) {
+		
+
+		console.log(nextProps);
+
+		let forSearchArr=[];
+		if( nextProps.keyword!='' ){
+			for( let i in this.state.assetArr ){
+				let ownerTemp = this.state.assetArr[i].owner;
+				// if(){
+				// 	forSearchArr.push( this.state.assetArr[i] );
+				// }
+			}
+			this.setState({
+ 				assetArr: forSearchArr
+ 			});
+		}else{
+			this.setState({
+ 				assetArr: forSearchArr
+ 			});
+		}
+
+
+
+		let newAssetItem = nextProps.newAssetItem;
+		let insetItem = {
+			owner: newAssetItem.owner,
+			id: newAssetItem.id,
+			info: newAssetItem.info
+		};
+
+		if( insetItem.owner!='' && !newAssetItem.index ){
+			this.setState({
+ 				assetArr: this.state.assetArr.concat(insetItem)
+ 			});
+		}
+    }
+    getData(){
+    	var _this = this;
 		request
 			.get('/data/asset.json')
   			.end(function(err,res){
@@ -37,7 +78,7 @@ class List extends React.Component{
   					}
 		 		}
 			});
-	}
+    }
 	delete(e){
 		let index=e.target.getAttribute("data-index"),
 			assetArrTemp = this.state.assetArr;
@@ -50,12 +91,13 @@ class List extends React.Component{
 		let index=e.target.getAttribute("data-index");
 		let obj = this.state.assetArr[index];
 		obj.index = index;
-		this.props.setAssetInfo(obj);
+		let panelState = true;
+		this.props.changePanelInfo(obj,panelState);
 	}
 	render(){
 		let _this = this;
 		const listContent = this.state.assetArr.map( (item,index) => (
-		    <ListItem listItem={item} index={index} delete={this.delete} change={this.change} />
+		    <ListItem key={index} listItem={item} index={index} delete={this.delete} change={this.change} />
 		));
 		return(
 			<div className="tbWrap">

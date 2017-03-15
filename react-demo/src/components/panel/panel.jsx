@@ -1,45 +1,47 @@
 import React, { PropTypes } from 'react';
 import './panel.scss';
 
+/*
+* 参数说明：
+* panelState  控制弹框show/hide
+* assetInfo   弹窗显示值
+* close       关闭按钮功能
+* confirm     确认按钮功能
+*/
 const propTypes = {
-  showPanel: PropTypes.bool.isRequired,
-  closePanel: PropTypes.func.isRequired,
+  panelState: PropTypes.bool.isRequired,
+  assetInfo: PropTypes.object.isRequired,
+  close: PropTypes.func.isRequired,
   confirm: PropTypes.func.isRequired
 };
 class Panel extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showPanel: this.props.showPanel,
-			newAssetInfo: this.props.assetInfo
+			panelState: this.props.panelState,
+			assetInfo: this.props.assetInfo
 		};
-		this.ownerChange = this.ownerChange.bind(this);
-		this.infoChange = this.infoChange.bind(this);
-		this.idChange = this.idChange.bind(this);
+		this.changeState = this.changeState.bind(this);
 		this.confirm = this.confirm.bind(this);
 	}
-	ownerChange(e){
+	componentWillReceiveProps(nextProps) {
+        this.setState({ assetInfo: nextProps.assetInfo });
+    }
+	changeState(key){
+		let objTemp = this.state.assetInfo;
+		objTemp[key] = this.refs[key].value;
 		this.setState({
-			newAssetInfo:{owner: e.target.value}
-		});
-	}
-	infoChange(e){
-		this.setState({
-			newAssetInfo:{info: e.target.value}
-		});
-	}
-	idChange(e){
-		this.setState({
-			newAssetInfo:{id: e.target.value}
+			assetInfo: objTemp
 		});
 	}
 	confirm(){
-		let obj = this.state.newAssetInfo;
+		let obj = this.state.assetInfo;
 		this.props.confirm(obj);
 	}
 	render(){
 		let popCls = '';
-		if(!this.props.showPanel){
+
+		if(!this.props.panelState){
 			popCls = 'hide';
 		}
 		return(
@@ -51,20 +53,20 @@ class Panel extends React.Component{
 					<div className="panelContent">
 						<div className="item">
 							<b>使用人</b>
-							<input type="text" className="ipt" value={this.props.assetInfo.owner} onChange={this.ownerChange} />
+							<input type="text" className="ipt" ref="owner" value={this.state.assetInfo.owner} onChange={ ()=>this.changeState('owner') } />
 						</div>
 						<div className="item">
 							<b>固定编号</b>
-							<input type="text" className="ipt" value={this.props.assetInfo.id} onChange={this.idChange} />
+							<input type="text" className="ipt" ref="id" value={this.state.assetInfo.id} onChange={ ()=>this.changeState('id') } />
 						</div>
 						<div className="item">
 							<b>资产详情</b>
-							<input type="text" className="ipt" value={this.props.assetInfo.info} onChange={this.infoChange} />
+							<input type="text" className="ipt" ref="info" value={this.state.assetInfo.info} onChange={ ()=>this.changeState('info') } />
 						</div>
 					</div>
 					<div className="panelBtnBar">
 						<a href="javascript:;" className="btn" onClick={this.confirm}>确定</a>
-						<a href="javascript:;" className="btn cancelBtn" onClick={() => this.props.closePanel(false)} >取消</a>
+						<a href="javascript:;" className="btn cancelBtn" onClick={() => this.props.close(false)} >取消</a>
 					</div>
 				</div>
 			</div>
