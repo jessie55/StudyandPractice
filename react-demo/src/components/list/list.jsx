@@ -13,7 +13,8 @@ class List extends React.Component{
 			assetArr: [{
 				owner: '',
 				id: '',
-				info: ''
+				info: '',
+				index: ''
 			}]
 		};
 
@@ -25,41 +26,46 @@ class List extends React.Component{
 		this.getData();
 	}
 	componentWillReceiveProps(nextProps) {
-		
 
 		console.log(nextProps);
-
-		let forSearchArr=[];
-		if( nextProps.keyword!='' ){
-			for( let i in this.state.assetArr ){
-				let ownerTemp = this.state.assetArr[i].owner;
-				// if(){
-				// 	forSearchArr.push( this.state.assetArr[i] );
-				// }
-			}
-			this.setState({
- 				assetArr: forSearchArr
- 			});
-		}else{
-			this.setState({
- 				assetArr: forSearchArr
- 			});
-		}
-
-
 
 		let newAssetItem = nextProps.newAssetItem;
 		let insetItem = {
 			owner: newAssetItem.owner,
 			id: newAssetItem.id,
-			info: newAssetItem.info
+			info: newAssetItem.info,
+			index: newAssetItem.index
 		};
+		let forSearchArr=[];
 
-		if( insetItem.owner!='' && !newAssetItem.index ){
+		if( nextProps.searchFlag && nextProps.keyword!='' ){
+			let pattern = new RegExp(nextProps.keyword);
+			for( let i in this.state.assetArr ){
+				let ownerTemp = this.state.assetArr[i].owner;
+				if( pattern.test(ownerTemp) ){
+					forSearchArr.push( this.state.assetArr[i] );
+				}
+			}
 			this.setState({
- 				assetArr: this.state.assetArr.concat(insetItem)
+ 				assetArr: forSearchArr
  			});
+ 			return;
 		}
+
+		if( nextProps.addFlag ){
+			if( insetItem.id!='' && !insetItem.index ){
+				this.setState({
+	 				assetArr: this.state.assetArr.concat(insetItem)
+	 			});
+			}
+ 			return;
+		}
+
+		this.getData();
+		
+			
+		
+	
     }
     getData(){
     	var _this = this;
